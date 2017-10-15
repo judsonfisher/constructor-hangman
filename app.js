@@ -35,6 +35,9 @@ var endGame = function() {
 			if (!end) {
 				startGame();
 			}
+			else {
+				return;
+			}
 		}); 
 };
 
@@ -49,6 +52,7 @@ var guessAgain = function() {
 };
 
 var newRound = function() {
+	isLetterInWord = false;
 	guessesLeft = 5;
 	console.log("Guesses Remaining: " + guessesLeft);
 	selectedWord = wordOptions[Math.floor(Math.random() * wordOptions.length)];
@@ -82,9 +86,9 @@ var checkGuess = function(answers) {
 				console.log(wordNow.array);
 				if (wordNow.letters.toString() == wordNow.array.toString()) {
 					console.log("\nNice Job! Next Word!\n");
-					newRound();
+					return newRound();
 				} else {
-					guessAgain();
+					return guessAgain();
 				}
 			}
 		}

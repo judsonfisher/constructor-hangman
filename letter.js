@@ -9,7 +9,6 @@ var Letter = function(input) {
 		for (var i = 0; i < this.length; i++) {
 			this.array.push("_");
 		}
-		// this.array = this.array.join("  ");
 		console.log(this.array);
 	}
 	this.replaceBlank = function(answer) {

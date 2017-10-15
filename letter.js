@@ -16,16 +16,9 @@ var Letter = function(input) {
 		for (var i = 0; i < this.length; i++) {
 			if (this.letters[i] == answer) {
 				this.array[i] = answer;
-			}
-		}
-	}
-}
-
-// var testWord = new Word("judson");
-var testing = new Letter("judson");
-// console.log(testing);
-
-// testing.displayBlanks();
-// testing.joinBlanks();
+			};
+		};
+	};
+};
 
 module.exports = Letter;

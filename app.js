@@ -1,46 +1,105 @@
-//Word is chosen in word.js, letters are broken down in letter.js, then app.js runs the game using the info provided
+var Letter = require("./letter.js");
+var inquirer = require('inquirer');
 
-// Create initial variables that take in functions and user commands
-var word = require("./word.js");
-var letter = require("./letter.js");
+var wordOptions = ["javascript", "python", "ruby", "mysql", "jquery", "html", "react", "node", "express", "devtools", "github"];
 var selectedWord = "";
-var lettersInWord = [];
-var numBlanks = 0;
-var blanksAndSuccesses = []; // j _ _ n _ _ 
-
-// Game counters 
 var guessesLeft = 5;
+var isLetterInWord = false;
 
-//FUNCTIONS
-//Start game function
-//Inquirer function within startGame, must prompt endGame if no guesses remain
+function startGame() {
+	guessesLeft = 5;
+	console.log("\nLet's Play!\n");
+	console.log("Guesses Remaining: " + guessesLeft);
+	selectedWord = wordOptions[Math.floor(Math.random() * wordOptions.length)];
+	wordNow = new Letter(selectedWord);
+	// console.log(wordNow.letters + "\n");
+	wordNow.displayBlanks();	
+		inquirer.prompt([
+			{
+		    	type: 'input',
+		    	name: 'guess',
+		    	message: 'Guess a letter!'
+		 	}
+			]).then(checkGuess);
+	};		  
 
-function playGame() {
-	inquirer.prompt([
-		{
-	    	type: 'input',
-	    	name: 'guess',
-	    	message: 'Guess a letter!'
-	 	}
-		]).then(function(answers) {
-			//Run function checking if letters and input match
-		}  
-};
-
-function gameOver() {
+var endGame = function() {
 	inquirer.prompt([
 	 	{
 	 		type: 'confirm',
-	 		name: 'endGame',
+	 		name: 'end',
 	 		message: 'Out of guesses! Would you like to end the game?'
 	 	}
 		]).then(function (answers) {
-			// Load new question if answer says no, end all functionality if yes(or new question no matter what)
-		} 
+			var end = answers.end;
+			if (!end) {
+				startGame();
+			}
+		}); 
 };
 
+var guessAgain = function() {
+	inquirer.prompt([
+			{
+		    	type: 'input',
+		    	name: 'guess',
+		    	message: 'Guess a letter!'
+		 	}
+			]).then(checkGuess);
+};
 
-// Initiate game using startGame();
+var newRound = function() {
+	guessesLeft = 5;
+	console.log("Guesses Remaining: " + guessesLeft);
+	selectedWord = wordOptions[Math.floor(Math.random() * wordOptions.length)];
+	wordNow = new Letter(selectedWord);
+	// console.log(wordNow.letters + "\n");
+	wordNow.displayBlanks();	
+		inquirer.prompt([
+			{
+		    	type: 'input',
+		    	name: 'guess',
+		    	message: 'Guess a letter!'
+		 	}
+			]).then(checkGuess);
+};
 
+var checkGuess = function(answers) {
+	answer = answers.guess;
+	isLetterInWord = false;
+	for (var i=0; i < wordNow.letters.length; i++) {
+		if (wordNow.letters[i] == answer) {
+			isLetterInWord = true;
+		}
+	}
+	// Check location in word and populate
+	if(isLetterInWord) {
+		for (var i = 0; i < wordNow.letters.length; i++) {
+			if (wordNow.letters[i] == answer) {
+				console.log("\nCORRECT!");
+				wordNow.replaceBlank(answer);
+				console.log("\nGuesses Remaining: " + guessesLeft);
+				console.log(wordNow.array);
+				if (wordNow.letters.toString() == wordNow.array.toString()) {
+					console.log("\nNice Job! Next Word!\n");
+					newRound();
+				} else {
+					guessAgain();
+				}
+			}
+		}
+	}
+	else {
+		console.log("\n*trump voice* WRONG\n");
+		guessesLeft--;
+		console.log("Guesses Remaining: " + guessesLeft);
+		console.log(wordNow.array);
+		if (guessesLeft > 0) {
+			guessAgain();
+		} else if (guessesLeft === 0) {
+			endGame();
+		}
+	}
+};
 
-
+startGame();

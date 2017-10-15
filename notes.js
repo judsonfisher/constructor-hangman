@@ -2,7 +2,7 @@
 var word = require("./word.js");
 var letter = require("./letter.js");
 // var guessesRemaining = 6;
-var guess = process.argv[2];
+
 
 var selectedWord = "";
 var lettersInWord = [];

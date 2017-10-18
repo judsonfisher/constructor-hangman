@@ -83,7 +83,7 @@ var checkGuess = function(answers) {
 				console.log("\nCORRECT!");
 				wordNow.replaceBlank(answer);
 				console.log("\nGuesses Remaining: " + guessesLeft);
-				console.log(wordNow.array);
+				console.log(wordNow.array.join("  "));
 				if (wordNow.letters.toString() == wordNow.array.toString()) {
 					console.log("\nNice Job! Next Word!\n");
 					return newRound();
@@ -97,7 +97,7 @@ var checkGuess = function(answers) {
 		console.log("\n*trump voice* WRONG\n");
 		guessesLeft--;
 		console.log("Guesses Remaining: " + guessesLeft);
-		console.log(wordNow.array);
+		console.log(wordNow.array.join("  "));
 		if (guessesLeft > 0) {
 			guessAgain();
 		} else if (guessesLeft === 0) {
